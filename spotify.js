@@ -16,17 +16,40 @@ var getArtist = function(name) {
     const query = {
         q: name,
         limit: 1,
-        type: 'artist'
+        type: 'artist',
+        country: 'US'
     };
 
     return getFromApi('search', query).then( item => {
                 artist = item.artists.items[0];
                let artistId = item.artists.items[0].id;
                 console.log(artistId);
-                return  artistId;
-         }) .then(return fetch('https://api.spotify.com/v1/${artists}/${artistId}/related-artists').then(response =>{
-            console.log(response)
-         }))
+                console.log(artist);
+                return  getFromApi(`artists/${artistId}/related-artists`)
+         }).then( item =>{
+            artist.related = item.artists;
+            let topTracksPromises = item.artists.map(artist => {
+                //console.log(artist.id);
+               return getFromApi(`artists/${artist.id}/top-tracks`, query)
+
+            })
+          return  Promise.all(topTracksPromises)
+                .then( data => {
+
+                    console.log(data);
+                    console.log(artist);
+
+                    data.forEach( (obj, i) => artist.related[i].tracks = obj.tracks)
+
+                    console.log(artist)
+                    //return data.track
+                    return artist
+                })
+                // console.log(topTracksPromises);
+                
+                //return artist
+         }
+         )
      // return .then( response =>{
     
      //        if (!response.ok) {
