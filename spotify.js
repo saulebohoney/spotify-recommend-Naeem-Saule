@@ -9,7 +9,6 @@ var getFromApi = function(endpoint, query={}) {
     });
 };
 
-
 var artist;
 var getArtist = function(name) {
 
@@ -18,7 +17,19 @@ var getArtist = function(name) {
         q: name,
         limit: 1,
         type: 'artist'
-        }
+    };
+    const url = 'https://api.spotify.com/v1';
+    fetch(url).then(item => {
+  
+        var artist = item.artists.items[0];
+        return artist;
+    })
+    
+};
+     getFromApi(search,query);
+
+
+
 
     const url = 'https://api.spotify.com/v1/search';
  
