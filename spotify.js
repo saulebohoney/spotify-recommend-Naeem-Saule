@@ -10,6 +10,7 @@ var getFromApi = function(endpoint, query={}) {
 };
 
 var artist;
+
 var getArtist = function(name) {
 
 
@@ -21,6 +22,7 @@ var getArtist = function(name) {
     };
 
     return getFromApi('search', query).then( item => {
+<<<<<<< HEAD
                 artist = item.artists.items[0];
                let artistId = item.artists.items[0].id;
                 console.log(artistId);
@@ -58,16 +60,4 @@ var getArtist = function(name) {
     
      //        return response.json()
 
-     //        })
-
-        //     .then(getFromApi('search', query).then( item => {
-        //         artist = item.artists.items[0].id;
-        //         console.log(artist);
-        //         return artist;
-        // }).catch( err => {
-        //     console.log(err);
-        // }))
-
-    
-}
 
