@@ -12,19 +12,25 @@ var getFromApi = function(endpoint, query={}) {
 
 var artist;
 var getArtist = function(name) {
+
+
     const query = {
         q: name,
         limit: 1,
         type: 'artist'
         }
 
-    const url = 'https://api.spotify.com/v1/${endpoint}';
-        // Edit me!
-//    ('https://api.spotify.com/v1/search' query, )
-        $.getJSON(url, query).then(stream => {
-            console.log('this',stream);
-            stream.json()
+    const url = 'https://api.spotify.com/v1/search';
+ 
+          
+        return getFromApi('search', query).then( item => {
+                artist = item.artists.items[0];
+                console.log(artist);
+                return artist;
         })
-}
 
-getArtist('DREAM');
+        console.log(artist);
+    
+}
+getArtist('stevie wonder');
+
