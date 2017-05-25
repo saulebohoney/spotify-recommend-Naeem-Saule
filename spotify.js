@@ -18,18 +18,6 @@ var getArtist = function(name) {
         limit: 1,
         type: 'artist'
     };
-    const url = 'https://api.spotify.com/v1';
-    fetch(url).then(item => {
-  
-        var artist = item.artists.items[0];
-        return artist;
-    })
-    
-};
-     getFromApi(search,query);
-
-
-
 
     const url = 'https://api.spotify.com/v1/search';
  
@@ -38,10 +26,12 @@ var getArtist = function(name) {
                 artist = item.artists.items[0];
                 console.log(artist);
                 return artist;
-        })
+        }).catch(function(err) {
+            console.log(err);
+        });
 
-        console.log(artist);
+        //console.log(artist);
     
 }
-getArtist('stevie wonder');
+//getArtist('stevie wonder');
 
