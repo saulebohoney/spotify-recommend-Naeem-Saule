@@ -10,7 +10,6 @@ var getFromApi = function(endpoint, query={}) {
 };
 
 var artist;
-
 var getArtist = function(name) {
 
 
@@ -21,43 +20,43 @@ var getArtist = function(name) {
         country: 'US'
     };
 
-    return getFromApi('search', query).then( item => {
-<<<<<<< HEAD
+    return getFromApi('search', query)
+        .then( item => {
                 artist = item.artists.items[0];
+              
                let artistId = item.artists.items[0].id;
-                console.log(artistId);
-                console.log(artist);
+               
                 return  getFromApi(`artists/${artistId}/related-artists`)
-         }).then( item =>{
+         })
+        .then( item =>{
+            
+            console.log('before', artist)
+            
             artist.related = item.artists;
+            
+             console.log('that', artist)
+            
             let topTracksPromises = item.artists.map(artist => {
-                //console.log(artist.id);
-               return getFromApi(`artists/${artist.id}/top-tracks`, query)
+              
+               return getFromApi(`artists/${artist.id}/top-tracks`, query)  //returns a promise
 
             })
-          return  Promise.all(topTracksPromises)
+            return  Promise.all(topTracksPromises) //when all are complete make the object
                 .then( data => {
 
-                    console.log(data);
-                    console.log(artist);
+                console.log(data);
+                   
+                console.log(artist);
 
-                    data.forEach( (obj, i) => artist.related[i].tracks = obj.tracks)
+                data.forEach( (obj, i) => artist.related[i].tracks = obj.tracks)
 
-                    console.log(artist)
-                    //return data.track
-                    return artist
-                })
-                // console.log(topTracksPromises);
-                
-                //return artist
-         }
-         )
-     // return .then( response =>{
-    
-     //        if (!response.ok) {
-     //            return Promise.reject(response.statusText);
-     //        }
-    
-     //        return response.json()
-
+                console.log(artist)
+                  
+                return artist
+            })
+                   
+         })
+   
+       
+}
 
