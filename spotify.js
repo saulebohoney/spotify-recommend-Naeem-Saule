@@ -13,53 +13,37 @@ var artist;
 
 var getArtist = function(name) {
 
-
     const query = {
         q: name,
         limit: 1,
         type: 'artist'
     };
-
     return getFromApi('search', query).then( item => {
-        artist = item.artists.items[0];
-        let artistId = item.artists.items[0].id;
-        console.log(artistId);
-        return  fetch('https://api.spotify.com/v1/artist/${artistId}/related-artists');
-    }).then((item)=> {
-             return item.json();
-             console.log(item);
-         });
-};
-        
-
-var getArtist = function(name) {
-
-
-    const query = {
-        q: name,
-        limit: 1,
-        type: 'artist'
-    };
-
-    //const url = 'https://api.spotify.com/v1/search';
- 
-          
-        return getFromApi('search', query).then( item => {
-                artist = item.artists.items[0];
-                const artistId = item.artists.items[0].id;
-                console.log(artist);
-                return getFromApi(`artists/${artistId}/related-artists`);
-        }).then( item => {
+                    artist = item.artists.items[0];
+                    const artistId = item.artists.items[0].id;
+                    console.log(artist);
+                
+                    return getFromApi(`artists/${artistId}/related-artists`);
+                }).then( item => {
             artist.related =item.artists;
-                console.log(item);
-                return artist;
+               // console.log(item);
+                // return artist;
+                //for (i=0;i<artist.related;i++){
+                 
+                //}
+
+           // console.log(artist.Id);
+            return getFromApi(`artists/${artist.related[0].Id}/top-tracks`);
+              console.log(artist.related[0].Id);
+        }).then( {      
+                console.log(artist.related[0].Id);
                 
         }).catch(function(err) {
             console.log(err);
         });
 
-        //console.log(artist);
+   
     
-}
+};
 //getArtist('stevie wonder');
 
