@@ -10,6 +10,7 @@ var getFromApi = function(endpoint, query={}) {
 };
 
 var artist;
+<<<<<<< HEAD
 
 var getArtist = function(name) {
 
@@ -46,4 +47,55 @@ var getArtist = function(name) {
     
 };
 //getArtist('stevie wonder');
+
+var getArtist = function(name) {
+
+
+    const query = {
+        q: name,
+        limit: 1,
+        type: 'artist',
+        country: 'US'
+    };
+
+    return getFromApi('search', query)
+        .then( item => {
+                artist = item.artists.items[0];
+              
+               let artistId = item.artists.items[0].id;
+               
+                return  getFromApi(`artists/${artistId}/related-artists`)
+         })
+        .then( item =>{
+            
+            console.log('before', artist)
+            
+            artist.related = item.artists;
+            
+             console.log('that', artist)
+            
+            let topTracksPromises = item.artists.map(artist => {
+              
+               return getFromApi(`artists/${artist.id}/top-tracks`, query)  //returns a promise
+
+            })
+            return  Promise.all(topTracksPromises) //when all are complete make the object
+                .then( data => {
+
+                console.log(data);
+                   
+                console.log(artist);
+
+                data.forEach( (obj, i) => artist.related[i].tracks = obj.tracks)
+
+                console.log(artist)
+                  
+                return artist
+            })
+                   
+         })
+   
+       
+}
+
 
